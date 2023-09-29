@@ -14,7 +14,6 @@ def P6(inputFile):
     if decisionTree.root is not None:
         decisionTree.root.print()
         print(decisionTree.root.getNodeCount())
-#        visualize(decisionTree.root, 0, None)
 
     x = df["0"].values.tolist()
     y = df["1"].values.tolist()
@@ -32,7 +31,6 @@ def P6(inputFile):
     lab1 = df[df["label"] == 1]
     x1 = lab1["0"].values.tolist()
     y1 = lab1["1"].values.tolist()
-    #fig,ax = plt.subplots()
     plt.scatter(x0, y0, c = "blue")
     plt.scatter(x1, y1, c = "red")
     plt.savefig(sys.argv[1]+'_scatter.pdf', format="pdf")
@@ -56,7 +54,6 @@ def P6(inputFile):
     lab1 = df[df["label"] == 1]
     x1 = lab1["0"].values.tolist()
     y1 = lab1["1"].values.tolist()
-    #fig,ax = plt.subplots()
     plt.scatter(x0, y0, c = "blue")
     plt.scatter(x1, y1, c = "red")
     plt.savefig(sys.argv[1]+'_decision_boundary.pdf', format="pdf")
@@ -94,9 +91,6 @@ def P7():
         n_list.append(size)
         err_list.append(error)
 
-        #decision boundary scatter plot
-        #x = np.random.uniform(0.0, 1.0, 10000)
-        #y = np.random.uniform(0.0, 1.0, 10000)
         x = df["0"].values.tolist()
         y = df["1"].values.tolist()
         pred = []
@@ -112,7 +106,6 @@ def P7():
         lab1 = df[df["label"] == 1]
         x1 = lab1["0"].values.tolist()
         y1 = lab1["1"].values.tolist()
-        #fig,ax = plt.subplots()
         plt.scatter(x0, y0, c = "blue")
         plt.scatter(x1, y1, c = "red")
         plt.savefig('Dbig_decision_boundary_n_' + str(size) + '.pdf', format="pdf")
@@ -125,5 +118,5 @@ def P7():
     plt.savefig('P7_learning_rate.pdf', format='pdf')
 
 
-#P6(sys.argv[1])
+P6(sys.argv[1])
 P7()
