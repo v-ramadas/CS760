@@ -2,6 +2,7 @@ import os
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
+import torch.nn.init as init
 
 class NeuralNetworkTorch(nn.Module):
     def __init__(self):
@@ -16,12 +17,25 @@ class NeuralNetworkTorch(nn.Module):
                 nn.LogSoftmax(),
         )
 
+    def initWeights(self, initType):
+
+        for layer in self.linearSigmoidStack:
+            if isinstance(layer, nn.Linear):
+                if initType == "zeros":
+                    init.constant_(layer.weight, 0.0) 
+#                    if layer.bias is not None:
+#                        init.constant_(layer.bias, 0) 
+                else:
+                    init.uniform_(layer.weight, -1, 1)
+                    if layer.bias is not None:
+                        init.uniform_(layer.bias, -1, 1)
+
     def forward(self, x):
         x = self.flatten(x)
         logits = self.linearSigmoidStack(x)
         return logits
 
-    def train(self, dataLoader, lossFunction, optimizer, dataSize, batchSize):
+    def train(self, dataLoader, lossFunction, optimizer, batchSize):
         size = len(dataLoader.dataset)
         i = 0
         for batch, (X, y) in enumerate(dataLoader):
@@ -37,7 +51,7 @@ class NeuralNetworkTorch(nn.Module):
                 print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
             
             i += batchSize
-            if i >= dataSize - 1:
+            if i > size:
                 break
         return
 

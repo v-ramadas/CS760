@@ -18,23 +18,22 @@ mnistDataTest = datasets.MNIST('.', train=False, download=True, transform=transf
 testDataLoader = torch.utils.data.DataLoader(mnistDataTest, batch_size=1, shuffle=False)
 
 model = NeuralNetworkTorch()
-print(model)
+model.initWeights("zeros")
 lossFunction = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learningRate)
 
 misPred = []
-datasetl = [10, 100, 500, 1000, 10000, 30000, 60000]
+epochList = []
 epochs = 20
-for dataset in datasetl:
-    for t in range(epochs):
-        print(f"Epoch {t+1}\n-------------------------------")
-        model.train(trainDataLoader, lossFunction, optimizer, dataset, batchSize)
+for t in range(epochs):
+    print(f"Epoch {t+1}\n-------------------------------")
+    model.train(trainDataLoader, lossFunction, optimizer, batchSize)
     correct = model.test(testDataLoader, lossFunction)
     misPred.append(correct)
-print("Done!")
+    epochList.append(t)
+print("Test Error", correct)
 
-plt.plot(datasetl, misPred)
-plt.xscale("log")
+plt.plot(epochList, misPred)
 plt.grid()
 #plt.savefig('pytorch_nn_learning_curve.pdf', format='pdf')
 plt.show()
